@@ -1,0 +1,20 @@
+# Ambiente virtual
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Arquivos locais
+*.log
+
+# Outputs gerados
+output/*.xlsx
+output/*.csv
+
+# PDFs processados
+input/faturas_processadas/
+
+# Config local (se existir)
+.env
