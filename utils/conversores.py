@@ -97,6 +97,7 @@ def converter_data_completa(data_str: str) -> date:
 
     return date(ano, mes, dia)
 
-def converter_datav_picpay(data_str: str) -> str:
-    return datetime.strptime(data_str, "%d-%m-%Y").strftime("%Y-%m-%d")
+def converter_datav_picpay(data_str: str) -> date:
+    """Converte 'DD-MM-AAAA' em date (consistente com Nubank)."""
+    return datetime.strptime(data_str, "%d-%m-%Y").date()
 

@@ -3,6 +3,8 @@ import re
 import pandas as pd
 from rapidfuzz import process, fuzz
 
+from utils import normalizar_texto
+
 
 class Categorizador:
     """
@@ -43,13 +45,10 @@ class Categorizador:
 
 
     # -------------------------------------------------
-    # 🔹 Normalização
+    # 🔹 Normalização (usa utils para consistência com importar_pendencias)
     # -------------------------------------------------
-    def normalizar(self, texto: str) -> str:
-        texto = str(texto).lower()
-        texto = re.sub(r"[^a-z0-9\s*]", "", texto)
-        texto = re.sub(r"\s+", " ", texto)
-        return texto.strip()
+    def _normalizar(self, texto: str) -> str:
+        return normalizar_texto(str(texto) if texto else "")
 
     # -------------------------------------------------
     # 🔹 Carga da base histórica 2025
@@ -64,7 +63,7 @@ class Categorizador:
 
         for _, row in df.iterrows():
             try:
-                desc_norm = self.normalizar(row["DescNormalizada"])
+                desc_norm = self._normalizar(row["DescNormalizada"])
                 ind_categoria = int(row["IndCategoria"])
             except (ValueError, TypeError):
                 ignorados += 1
@@ -98,7 +97,7 @@ class Categorizador:
     # -------------------------------------------------
     def categorizar(self, descricao: str) -> dict:
         descricao_limpa = self.remover_parcela(descricao)
-        desc_norm = self.normalizar(descricao_limpa)
+        desc_norm = self._normalizar(descricao_limpa)
 
         # 1️⃣ Match exato
         if desc_norm in self.mapa_descricao_categoria:

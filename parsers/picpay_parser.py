@@ -80,6 +80,7 @@ class PicPayParser(ParserBase):
                 descricao=descricao,
                 valor=valor,
                 data_vencimento=data_vencimento,
+                desc_normalizada=resultado["DescBase"],
                 categoria=resultado["Categoria"],
                 ind_categoria=resultado["IndCategoria"],
                 tipo_match=resultado["TipoMatch"],

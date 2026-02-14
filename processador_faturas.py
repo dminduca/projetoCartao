@@ -44,10 +44,6 @@ class ProcessadorFaturas:
             parser = self.identificar_parser(pdf_path)
             registros = parser.parse()
 
-            for lanc in registros:
-                resultado = self.categorizador.categorizar(lanc.descricao)
-                lanc.categoria = resultado["Categoria"]
-
             self._mover_para_processados(pdf_path, parser.BANCO)
 
             lancamentos.extend(registros)

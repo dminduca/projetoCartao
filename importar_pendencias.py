@@ -14,7 +14,7 @@ if not BASE_HISTORICA_2025.exists():
 
 
 df_pend = pd.read_excel(PENDENCIAS_PATH)
-df_base = pd.read_excel(BASE_HISTORICA_2025)
+df_base = pd.read_excel(BASE_HISTORICA_2025, sheet_name="historico")
 
 df_base["DescNormalizada"] = df_base["DescNormalizada"].astype(str)
 df_base["IndCategoria"] = df_base["IndCategoria"].astype(str)
