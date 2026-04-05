@@ -5,6 +5,22 @@ from config import (
 )
 from utils import normalizar_texto
 
+def normalizar_categoria(valor):
+    if pd.isna(valor):
+        return ""
+
+    if isinstance(valor, float) and valor.is_integer():
+        return str(int(valor))
+
+    texto = str(valor).strip()
+
+    if not texto or texto.lower() == "nan":
+        return ""
+
+    if texto.endswith(".0") and texto[:-2].isdigit():
+        return texto[:-2]
+
+    return texto
 
 if not PENDENCIAS_PATH.exists():
     raise FileNotFoundError("Arquivo de pendências não encontrado.")
@@ -17,7 +33,7 @@ df_pend = pd.read_excel(PENDENCIAS_PATH)
 df_base = pd.read_excel(BASE_HISTORICA_2025, sheet_name="historico")
 
 df_base["DescNormalizada"] = df_base["DescNormalizada"].astype(str)
-df_base["IndCategoria"] = df_base["IndCategoria"].astype(str)
+df_base["IndCategoria"] = df_base["IndCategoria"].apply(normalizar_categoria)
 
 categorias_validas = set(df_base["IndCategoria"].unique())
 descricoes_existentes = set(df_base["DescNormalizada"].unique())
@@ -27,7 +43,7 @@ ignorados = 0
 
 
 for _, row in df_pend.iterrows():
-    ind_categoria = str(row.get("IndCategoria", "")).strip()
+    ind_categoria = normalizar_categoria(row.get("IndCategoria", ""))
 
     if not ind_categoria:
         ignorados += 1
